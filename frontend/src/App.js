@@ -1,12 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
-import CpuMonitor from './components/CPUMonitor';
+import logo from "./logo.svg";
+import "./App.css";
+import CPUUsage from "./CPUUsage";
+
 
 function App() {
   return (
     <div className="App">
-      <h1>System Sentinel</h1>
-      <CpuMonitor/>
+      <table>
+        <tr>
+          <td>
+            <CPUUsage></CPUUsage>
+          </td>
+        </tr>
+      </table>
     </div>
   );
 }

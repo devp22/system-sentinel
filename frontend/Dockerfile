@@ -1,17 +1,22 @@
+# frontend/Dockerfile
+# Use Node 18 or a compatible version
+FROM node:18
 
-FROM node:16-alpine
-
+# Set the working directory
 WORKDIR /app
 
+# Copy package.json and install dependencies
 COPY package.json package-lock.json ./
 RUN npm install
 
+# Copy the rest of the application code
 COPY . .
 
+# Build the React app
 RUN npm run build
 
-RUN npm install -g serve
+# Serve the app
+CMD ["npm", "start"]
 
+# Expose the frontend port
 EXPOSE 3000
-
-CMD ["serve", "-s", "build"]
