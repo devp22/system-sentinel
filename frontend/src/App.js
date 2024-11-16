@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import CPUUsage from "./CPUUsage";
-
+import LandingPage from "./LandingPage";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <table>
         <tr>
           <td>
-            <CPUUsage></CPUUsage>
+            <LandingPage></LandingPage>
           </td>
         </tr>
       </table>
