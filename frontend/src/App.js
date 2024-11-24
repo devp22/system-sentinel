@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
-import CPUUsage from "./CPUUsage";
-
+import CPUUsage from "./components/CPUUsage";
+import MemoryUsage from "./components/MemoryUsage";
 
 function App() {
   return (
@@ -10,6 +10,9 @@ function App() {
         <tr>
           <td>
             <CPUUsage></CPUUsage>
+          </td>
+          <td>
+            <MemoryUsage></MemoryUsage>
           </td>
         </tr>
       </table>

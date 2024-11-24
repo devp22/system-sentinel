@@ -6,6 +6,7 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
+  Label
 } from "recharts";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 
@@ -68,26 +69,47 @@ function CPUUsage() {
     });
 
   return (
-    <div style={{ border: "1px solid black", backgroundColor: "white" }}>
-      <h1>CPU Utilization: {utilization ? `${utilization}%` : "Loading..."}</h1>
-      <h1>CPU Speed: {speed ? `${speed} GHz` : "Loading..."}</h1>
-
-      <LineChart width={500} height={300} data={chartData}>
-        <CartesianGrid stroke="#ccc" />
+    <div
+      style={{
+        border: "3px solid pink",
+        backgroundColor: "#fcd0cc",
+        borderRadius: "10px",
+        margin: 5,
+        paddingTop: 10,
+      }}
+    >
+      <LineChart
+        width={400}
+        height={200}
+        data={chartData}
+        margin={{ top: 30, right: 50, left: 5, bottom: 0 }}
+        padding={10}
+      >
+        <CartesianGrid strokeLinecap="3 3" />
         <XAxis dataKey="time" tickFormatter={formatXAxis} />
-        <YAxis
-          label={{
-            value: "CPU Utilization (%)",
-            angle: -90,
-            position: "insideLeft",
-          }}
-        />
+        <YAxis>
+          <Label
+            style={{
+              textAnchor: "middle",
+              fontSize: "100%",
+              fill: "black",
+            }}
+            angle={-90}
+            value={"CPU Utilization (in %)"}
+          />
+        </YAxis>
         <Tooltip
           labelFormatter={formatXAxis}
           formatter={(value) => `${value}%`}
         />
         <Line type="monotone" dataKey="utilization" stroke="#8884d8" />
       </LineChart>
+      <h4 style={{ color: "black" }}>
+        CPU Utilization: {utilization ? `${utilization}%` : "Loading..."}
+      </h4>
+      <h4 style={{ color: "black" }}>
+        CPU Speed: {speed ? `${speed} GHz` : "Loading..."}
+      </h4>
     </div>
   );
 }
