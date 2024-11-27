@@ -10,65 +10,69 @@ import {
 } from "recharts";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 
-const CPUDataContext = createContext();
+const WiFiDataContext = createContext();
 
-function CPUDataProvider({ children }) {
-  const [CPUData, setCPUData] = useState({
-    usage: null,
-    speed: null,
+function WiFiDataProvider({ children }) {
+  const [WiFiData, setWiFiData] = useState({
+    received_bytes: null,
+    sent_bytes: null,
+    throughputMBpS: null,
     chartData: [],
     hasError: false,
   });
 
   useEffect(() => {
-    const fetchCPUData = () => {
-      fetch("http://127.0.0.1:5000/api/cpu")
+    const fetchWiFiData = () => {
+      fetch("http://127.0.0.1:5000/api/wifi")
         .then((response) =>
           response.ok ? response.json() : Promise.reject(response)
         )
         .then((data) => {
-          // Prepare data for the chart
           const formattedData = [
             {
               time: Date.now(),
-              usage: parseFloat(data.usage) || 0,
-              speed: parseFloat(data.speed) || 0,
+              throughputMBpS: parseFloat(data.ThroughputMbps).toFixed(2) || 0,
+              received_bytes:
+                (parseFloat(data.ReceivedBytes) / 1024).toFixed(2) || 0,
+              sent_bytes: (parseFloat(data.SendBytes) / 1024).toFixed(2) || 0,
             },
           ];
 
-          setCPUData((prev) => ({
+          setWiFiData((prev) => ({
             chartData: [...prev.chartData.slice(-30), ...formattedData],
-            usage: formattedData[0].usage,
-            speed: formattedData[0].speed,
+            throughputMBpS: formattedData[0].throughputMBpS,
+            received_bytes: formattedData[0].received_bytes,
+            sent_bytes: formattedData[0].sent_bytes,
             hasError: false,
           }));
         })
         .catch(() =>
-          setCPUData((prev) => ({
+          setWiFiData((prev) => ({
             ...prev,
             hasError: true,
           }))
         );
     };
 
-    fetchCPUData();
-    const interval = setInterval(fetchCPUData, 2000);
+    fetchWiFiData();
+    const interval = setInterval(fetchWiFiData, 2000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <CPUDataContext.Provider value={CPUData}>
+    <WiFiDataContext.Provider value={WiFiData}>
       {children}
-    </CPUDataContext.Provider>
+    </WiFiDataContext.Provider>
   );
 }
 
-function CPUUsage() {
-  const { usage, speed, chartData, hasError } = useContext(CPUDataContext);
+function WiFiUsage() {
+  const { throughputMBpS, received_bytes, sent_bytes, chartData, hasError } =
+    useContext(WiFiDataContext);
 
   if (hasError)
-    return <h2>Error loading CPU data. Check server connection.</h2>;
-  if (!chartData.length) return <h2>Loading CPU data...</h2>;
+    return <h2>Error loading WiFi data. Check server connection.</h2>;
+  if (!chartData.length) return <h2>Loading WiFi data...</h2>;
 
   const formatXAxis = (tickItem) =>
     new Date(tickItem).toLocaleTimeString([], {
@@ -104,20 +108,23 @@ function CPUUsage() {
               fill: "black",
             }}
             angle={-90}
-            value={"CPU Usage (in %)"}
+            value={"Throughput (in MB)"}
           />
         </YAxis>
         <Tooltip
           labelFormatter={formatXAxis}
-          formatter={(value) => `${value} %`}
+          formatter={(value) => `${value} MB`}
         />
-        <Line type="monotone" dataKey="usage" stroke="#8884d8" />
+        <Line type="monotone" dataKey="throughputMBpS" stroke="#8884d8" />
       </LineChart>
       <h4 style={{ color: "black" }}>
-        CPU Usage: {usage ? `${usage}` : "Loading..."} %
+        Send: {sent_bytes ? `${sent_bytes} (Kbps)` : "Loading..."}
       </h4>
       <h4 style={{ color: "black" }}>
-        Speed: {speed ? `${speed}` : "Loading..."} GHz
+        Received: {received_bytes ? `${received_bytes} (Kbps)` : "Loading..."}
+      </h4>
+      <h4 style={{ color: "black" }}>
+        Throughput: {throughputMBpS ? `${throughputMBpS} (Mbps)` : "Loading..."}
       </h4>
     </div>
   );
@@ -127,9 +134,9 @@ export default function App() {
   return (
     <ThemeProvider theme={createTheme()}>
       <CssBaseline />
-      <CPUDataProvider>
-        <CPUUsage />
-      </CPUDataProvider>
+      <WiFiDataProvider>
+        <WiFiUsage />
+      </WiFiDataProvider>
     </ThemeProvider>
   );
 }

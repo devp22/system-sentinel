@@ -10,19 +10,18 @@ import {
 } from "recharts";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 
-const CPUDataContext = createContext();
+const DiskDataContext = createContext();
 
-function CPUDataProvider({ children }) {
-  const [CPUData, setCPUData] = useState({
-    usage: null,
-    speed: null,
+function DiskDataProvider({ children }) {
+  const [DiskData, setDiskData] = useState({
+    percentage_disk_time: null,
     chartData: [],
     hasError: false,
   });
 
   useEffect(() => {
-    const fetchCPUData = () => {
-      fetch("http://127.0.0.1:5000/api/cpu")
+    const fetchDiskData = () => {
+      fetch("http://127.0.0.1:5000/api/disk")
         .then((response) =>
           response.ok ? response.json() : Promise.reject(response)
         )
@@ -31,44 +30,43 @@ function CPUDataProvider({ children }) {
           const formattedData = [
             {
               time: Date.now(),
-              usage: parseFloat(data.usage) || 0,
-              speed: parseFloat(data.speed) || 0,
+              percentage_disk_time: parseFloat(data.percentage_disk_time) || 0,
             },
           ];
 
-          setCPUData((prev) => ({
+          setDiskData((prev) => ({
             chartData: [...prev.chartData.slice(-30), ...formattedData],
-            usage: formattedData[0].usage,
-            speed: formattedData[0].speed,
+            percentage_disk_time: formattedData[0].percentage_disk_time,
             hasError: false,
           }));
         })
         .catch(() =>
-          setCPUData((prev) => ({
+          setDiskData((prev) => ({
             ...prev,
             hasError: true,
           }))
         );
     };
 
-    fetchCPUData();
-    const interval = setInterval(fetchCPUData, 2000);
+    fetchDiskData();
+    const interval = setInterval(fetchDiskData, 2000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <CPUDataContext.Provider value={CPUData}>
+    <DiskDataContext.Provider value={DiskData}>
       {children}
-    </CPUDataContext.Provider>
+    </DiskDataContext.Provider>
   );
 }
 
-function CPUUsage() {
-  const { usage, speed, chartData, hasError } = useContext(CPUDataContext);
+function DiskUsage() {
+  const { percentage_disk_time, chartData, hasError } =
+    useContext(DiskDataContext);
 
   if (hasError)
-    return <h2>Error loading CPU data. Check server connection.</h2>;
-  if (!chartData.length) return <h2>Loading CPU data...</h2>;
+    return <h2>Error loading Disk data. Check server connection.</h2>;
+  if (!chartData.length) return <h2>Loading Disk data...</h2>;
 
   const formatXAxis = (tickItem) =>
     new Date(tickItem).toLocaleTimeString([], {
@@ -104,20 +102,18 @@ function CPUUsage() {
               fill: "black",
             }}
             angle={-90}
-            value={"CPU Usage (in %)"}
+            value={"Disk Usage (in %)"}
           />
         </YAxis>
         <Tooltip
           labelFormatter={formatXAxis}
           formatter={(value) => `${value} %`}
         />
-        <Line type="monotone" dataKey="usage" stroke="#8884d8" />
+        <Line type="monotone" dataKey="percentage_disk_time" stroke="#8884d8" />
       </LineChart>
       <h4 style={{ color: "black" }}>
-        CPU Usage: {usage ? `${usage}` : "Loading..."} %
-      </h4>
-      <h4 style={{ color: "black" }}>
-        Speed: {speed ? `${speed}` : "Loading..."} GHz
+        Disk Usage:{" "}
+        {percentage_disk_time ? `${percentage_disk_time}` : "Loading..."} %
       </h4>
     </div>
   );
@@ -127,9 +123,9 @@ export default function App() {
   return (
     <ThemeProvider theme={createTheme()}>
       <CssBaseline />
-      <CPUDataProvider>
-        <CPUUsage />
-      </CPUDataProvider>
+      <DiskDataProvider>
+        <DiskUsage />
+      </DiskDataProvider>
     </ThemeProvider>
   );
 }
