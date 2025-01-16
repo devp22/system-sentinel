@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# Introduction
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Purpose:
 
-## Available Scripts
+The purpose of this document is to outline the requirements for the System Health
+Prediction App, which monitors key system health metrics and predicts CPU
+consumption to enhance system stability and performance.
 
-In the project directory, you can run:
+## Scope:
 
-### `npm start`
+This app will provide real-time monitoring of CPU, memory, disk usage, GPU, and
+Wi-Fi. It will offer predictive analytics for CPU consumption and alert users when
+consumption exceeds specified thresholds.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Overall Description
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Product Perspective:
 
-### `npm test`
+The System Health Prediction App is a standalone application that consists of a frontend
+developed in React and a backend powered by Flask. It will integrate PowerShell scripts for
+data collection.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Product Features:
 
-### `npm run build`
+• Monitor real-time system metrics: CPU, memory, disk usage, GPU, and Wi-Fi.
+• Display real-time charts for each metric.
+• Provide an input box to set CPU consumption thresholds.
+• Generate alerts when CPU usage exceeds the defined threshold.
+• Use machine learning to predict future CPU consumption.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## User characteristics:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Any individual who wishes to monitor their system performance and receive alerts for any
+potential issues.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Operating Environment:
 
-### `npm run eject`
+The application will run on Windows operating systems, utilizing PowerShell for metric
+collection.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Functional Requirements
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. The system shall monitor CPU usage in real-time.
+2. The system shall monitor memory usage in real-time.
+3. The system shall monitor disk usage in real-time.
+4. The system shall monitor GPU usage in real-time.
+5. The system shall monitor Wi-Fi status in real-time.
+6. The system shall provide real-time charts for each monitored metric.
+7. The system shall allow users to set a CPU usage threshold via an input box.
+8. The system shall generate an alert if CPU usage exceeds the specified threshold.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Non-Functional Requirements
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. The system shall provide a user-friendly interface for monitoring metrics and setting
+thresholds.
+2. The system shall have a response time of less than 2 seconds for loading real-time
+metrics.
+3. The system shall be reliable, with an uptime of at least 99%.
+4. The system shall ensure data privacy and security in accordance with industry
+standards.
