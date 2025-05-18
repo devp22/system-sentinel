@@ -1,5 +1,4 @@
 Flask
 Flask-RESTful
 SQLAlchemy
-Subprocess
 # Add any other dependencies you may have

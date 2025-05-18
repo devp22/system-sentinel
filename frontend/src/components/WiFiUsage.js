@@ -34,7 +34,7 @@ function WiFiDataProvider({ children }) {
               throughputMBpS: parseFloat(data.ThroughputMbps).toFixed(2) || 0,
               received_bytes:
                 (parseFloat(data.ReceivedBytes) / 1024).toFixed(2) || 0,
-              sent_bytes: (parseFloat(data.SendBytes) / 1024).toFixed(2) || 0,
+              sent_bytes: (parseFloat(data.SentBytes) / 1024).toFixed(2) || 0,
             },
           ];
 
@@ -118,7 +118,7 @@ function WiFiUsage() {
         <Line type="monotone" dataKey="throughputMBpS" stroke="#8884d8" />
       </LineChart>
       <h4 style={{ color: "black" }}>
-        Send: {sent_bytes ? `${sent_bytes} (Kbps)` : "Loading..."}
+        Sent: {sent_bytes ? `${sent_bytes} (Kbps)` : "Loading..."}
       </h4>
       <h4 style={{ color: "black" }}>
         Received: {received_bytes ? `${received_bytes} (Kbps)` : "Loading..."}
